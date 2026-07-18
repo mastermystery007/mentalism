@@ -1,25 +1,138 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StatusBar} from 'expo-status-bar';
-import React,{useEffect,useMemo,useState} from 'react';
-import {SafeAreaView,ScrollView,StyleSheet,Text,TextInput,TouchableOpacity,View} from 'react-native';
-type L={id:number;title:string;summary:string;points:string[];assignment:string;media:string};
-const lessons:L[]=[
-[1,'The Mentalist’s Claim','Choose a coherent persona built around intuition, psychology, influence, memory, deduction or theatrical mystery.',['Separate effect, method and implied explanation.','Build credibility through consistency rather than supernatural certainty.','Set hard ethical limits around grief, health, finance and privacy.'],'Write a 100-word persona statement and three claims you will never make.','Persona examples and performance-opening video.'],
-[2,'Observation Without Myths','Train accurate observation without pretending body language is a lie detector.',['Separate observable behaviour from interpretation.','Compare responses with the participant’s baseline.','Treat hesitation, wording and salience as clues, never proof.'],'Log facts, hypotheses and alternatives from a five-minute conversation.','Observation worksheet and annotated demonstration.'],
-[3,'Psychological Forces','Use framing, prototypes, speed and category restriction to influence likely choices.',['Perform number, shape, colour and object forces.','Track genuine success rates under different conditions.','Prepare clear outs for every probabilistic method.'],'Run each force ten times and record outcomes.','Force demonstrations and tracking sheet.'],
-[4,'Equivoque','Create free-choice experiences through consistent conversational branching.',['Progress from two objects to five-object eliminations.','Keep language symmetrical and natural.','End on selection or elimination without contradiction.'],'Script every branch of a five-object prediction.','Interactive branching simulator placeholder.'],
-[5,'Billets & Information Strategy','Acquire minimal written information and separate acquisition from revelation.',['Control what is written and how the billet is oriented.','Delay revelation to weaken suspicion of a peek.','Reveal category, texture and emotion before exact information.'],'Build a meaningful-place revelation in five stages.','Billet handling videos and printable paper templates.'],
-[6,'Drawing Duplication','Reveal a hidden sketch through orientation, shape, category and distinctive feature.',['Compare force, peek, impression and restricted-universe methods.','Draw progressively and imperfectly to suggest thought transmission.','Handle abstract drawings and misses gracefully.'],'Practise twenty common drawings and three reveal scripts.','Back-to-back duplication demo and drawing library.'],
-[7,'Prediction Architecture','Make predictions feel isolated, committed and impossible.',['Timestamp commitment without overemphasising the envelope.','Use layered information, callbacks and multiple outs.','Turn partial hits into honest, meaningful theatre.'],'Create a person-place-action prediction.','Full prediction performance and construction worksheet.'],
-[8,'One-Ahead & Multiple Minds','Manage sequential information so each revelation supplies the next.',['Disguise acquisition and vary reveal order.','Mix known and unknown information.','Give each revelation a different emotional texture.'],'Construct a three-person words, drawings or memories routine.','One-ahead diagram and model performance.'],
-[9,'Cold Reading Fundamentals','Use broad-to-specific statements, feedback and branching ethically.',['Practise Barnum statements, Rainbow Ruse, forking, fuzzy facts and Russian Doll.','Convert feedback into later information without claiming certainty.','Never diagnose, exploit bereavement or create dependency.'],'Deliver a three-minute entertainment reading and annotate each technique.','Reading examples, drills and ethical red-flag sheet.'],
-[10,'Muscle Reading & Pendulums','Use ideomotor movement and contact cues to locate choices and objects.',['Begin with large directional signals.','Follow rather than force participant movement.','Frame pendulum responses accurately and theatrically.'],'Locate one hidden object in five practice rounds.','Contact mind-reading and pendulum demonstrations.'],
-[11,'Memory as a Real Skill','Build genuine feats using association, links, pegs and memory palaces.',['Memorise audience words and names.','Recall lists forwards, backwards and by position.','Blend authentic skill with strong presentation.'],'Memorise and perform a twenty-item audience list.','Guided memory drills and peg-system cards.'],
-[12,'Book Tests & Word Revelation','Reveal a thought-of word through meaning, imagery, context and letters.',['Compare forced location, known text and peek structures.','Avoid tedious letter fishing.','Reveal associations before exact spelling.'],'Create a routine using an ordinary book.','Book-test walkthrough and script planner.'],
-[13,'Dual Reality & Pre-Show','Create layered audience experiences without humiliating participants.',['Understand differing participant and audience perceptions.','Use prior information with transparent ethical boundaries.','Ensure both viewpoints remain satisfying.'],'Write a dual-reality routine and audit participant dignity.','Annotated audience/participant perspective video.'],
-[14,'Psychometry & Q&A','Build concise object readings and multi-person question routines.',['Manage ownership, information and reveal order.','Avoid health, death and trauma claims.','Combine billets, categorisation and one-ahead coherently.'],'Create a five-object psychometry sequence.','Psychometry performance and Q&A flowchart.'],
-[15,'Complete Mentalism Show','Assemble forces, real skill, thought revelation and prediction into one act.',['Open quickly and escalate impossibility.','Select volunteers, cue applause and recover professionally.','Credit creators and protect methods respectfully.'],'Record a 12-minute set with a force, memory feat, drawing duplication and prediction.','Complete model show and assessment rubric.']
-].map(x=>({id:x[0] as number,title:x[1] as string,summary:x[2] as string,points:x[3] as string[],assignment:x[4] as string,media:x[5] as string}));
-const KEY='mentalism-progress-v1';
-export default function App(){const[selected,setSelected]=useState<L|null>(null),[done,setDone]=useState<number[]>([]),[q,setQ]=useState('');useEffect(()=>{AsyncStorage.getItem(KEY).then(v=>v&&setDone(JSON.parse(v))).catch(()=>{})},[]);const toggle=async(id:number)=>{const n=done.includes(id)?done.filter(x=>x!==id):[...done,id];setDone(n);await AsyncStorage.setItem(KEY,JSON.stringify(n))};const filtered=useMemo(()=>lessons.filter(l=>(l.title+l.summary).toLowerCase().includes(q.toLowerCase())),[q]);if(selected)return <SafeAreaView style={s.safe}><StatusBar style="light"/><ScrollView contentContainerStyle={s.page}><TouchableOpacity onPress={()=>setSelected(null)}><Text style={s.back}>‹ Course</Text></TouchableOpacity><Text style={s.kicker}>LESSON {selected.id} · 25–40 MIN</Text><Text style={s.title}>{selected.title}</Text><Text style={s.lead}>{selected.summary}</Text><View style={s.card}><Text style={s.cardTitle}>Core training</Text>{selected.points.map((p,i)=><Text key={i} style={s.body}>• {p}</Text>)}</View><View style={s.card}><Text style={s.cardTitle}>Practice assignment</Text><Text style={s.body}>{selected.assignment}</Text></View><View style={s.card}><Text style={s.cardTitle}>Media to add</Text><Text style={s.muted}>{selected.media}</Text></View><View style={s.card}><Text style={s.cardTitle}>Professional rule</Text><Text style={s.body}>Rehearse script, visible handling, volunteer care and recovery as rigorously as the secret. Never use these methods to exploit private or vulnerable situations.</Text></View><TouchableOpacity style={[s.button,done.includes(selected.id)&&s.done]} onPress={()=>toggle(selected.id)}><Text style={s.buttonText}>{done.includes(selected.id)?'Completed ✓':'Mark lesson complete'}</Text></TouchableOpacity></ScrollView></SafeAreaView>;return <SafeAreaView style={s.safe}><StatusBar style="light"/><ScrollView contentContainerStyle={s.page}><Text style={s.brand}>MENTALISM MASTERY</Text><Text style={s.hero}>Thought Reading, Prediction & Psychological Performance</Text><Text style={s.lead}>Fifteen practical lessons covering forces, billets, drawing duplication, cold reading, memory, muscle reading, book tests and complete routines.</Text><View style={s.progress}><Text style={s.progressText}>{done.length}/15 lessons complete</Text><View style={s.track}><View style={[s.fill,{width:`${done.length/15*100}%`}]} /></View></View><TextInput value={q} onChangeText={setQ} placeholder="Search lessons…" placeholderTextColor="#888" style={s.search}/>{filtered.map(l=><TouchableOpacity key={l.id} style={s.lesson} onPress={()=>setSelected(l)}><View style={s.num}><Text style={s.numText}>{l.id}</Text></View><View style={{flex:1}}><Text style={s.lessonTitle}>{l.title}</Text><Text style={s.lessonSummary} numberOfLines={2}>{l.summary}</Text><Text style={s.meta}>25–40 min · lesson + drill + assessment</Text></View><Text style={s.chev}>{done.includes(l.id)?'✓':'›'}</Text></TouchableOpacity>)}<Text style={s.disclaimer}>For ethical entertainment and education. Do not exploit grief, health fears, finances, private information or vulnerable people.</Text></ScrollView></SafeAreaView>}
-const s=StyleSheet.create({safe:{flex:1,backgroundColor:'#090f12'},page:{padding:20,paddingBottom:60},brand:{color:'#70d7d0',fontSize:13,fontWeight:'800',letterSpacing:2,marginTop:8},hero:{color:'#fff',fontSize:35,fontWeight:'900',lineHeight:40,marginTop:10},lead:{color:'#c4ced0',fontSize:16,lineHeight:24,marginTop:10},progress:{backgroundColor:'#121c20',padding:16,borderRadius:16,marginTop:22},progressText:{color:'#fff',fontWeight:'700'},track:{height:7,backgroundColor:'#26383c',borderRadius:9,marginTop:10,overflow:'hidden'},fill:{height:7,backgroundColor:'#70d7d0'},search:{backgroundColor:'#121c20',color:'#fff',borderRadius:14,padding:15,marginVertical:16},lesson:{flexDirection:'row',gap:13,alignItems:'center',backgroundColor:'#10191d',padding:15,borderRadius:16,marginBottom:10,borderWidth:1,borderColor:'#213137'},num:{width:38,height:38,borderRadius:19,backgroundColor:'#173238',alignItems:'center',justifyContent:'center'},numText:{color:'#9ff5ef',fontWeight:'900'},lessonTitle:{color:'#fff',fontWeight:'800',fontSize:16},lessonSummary:{color:'#a7b4b6',fontSize:13,lineHeight:18,marginTop:4},meta:{color:'#71868a',fontSize:11,marginTop:7},chev:{color:'#70d7d0',fontSize:24},back:{color:'#70d7d0',fontSize:17,fontWeight:'700',marginBottom:20},kicker:{color:'#63b9b3',fontSize:12,fontWeight:'800',letterSpacing:1.4},title:{color:'#fff',fontSize:31,fontWeight:'900',lineHeight:36,marginTop:8},card:{backgroundColor:'#10191d',padding:17,borderRadius:16,marginTop:14,borderWidth:1,borderColor:'#213137'},cardTitle:{color:'#fff',fontSize:17,fontWeight:'800',marginBottom:8},body:{color:'#c4ced0',fontSize:15,lineHeight:23,marginBottom:7},muted:{color:'#829497',lineHeight:21},button:{backgroundColor:'#287f79',padding:17,borderRadius:15,alignItems:'center',marginTop:18},done:{backgroundColor:'#345a46'},buttonText:{color:'#fff',fontWeight:'900',fontSize:16},disclaimer:{color:'#68777a',fontSize:12,lineHeight:18,marginTop:24}});
+import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useMemo, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Lesson, lessons } from './src/course';
+
+const PROGRESS_KEY = 'mentalism-progress-v2';
+const BOOKMARK_KEY = 'mentalism-bookmarks-v1';
+type Answers = Record<number, number>;
+
+export default function App() {
+  const [selected, setSelected] = useState<Lesson | null>(null);
+  const [done, setDone] = useState<number[]>([]);
+  const [bookmarks, setBookmarks] = useState<number[]>([]);
+  const [query, setQuery] = useState('');
+  const [answers, setAnswers] = useState<Answers>({});
+
+  useEffect(() => {
+    Promise.all([AsyncStorage.getItem(PROGRESS_KEY), AsyncStorage.getItem(BOOKMARK_KEY)])
+      .then(([savedDone, savedBookmarks]) => {
+        if (savedDone) setDone(JSON.parse(savedDone));
+        if (savedBookmarks) setBookmarks(JSON.parse(savedBookmarks));
+      })
+      .catch(() => undefined);
+  }, []);
+
+  const filtered = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    if (!needle) return lessons;
+    return lessons.filter((lesson) => [lesson.title, lesson.summary, lesson.level, ...lesson.objectives].join(' ').toLowerCase().includes(needle));
+  }, [query]);
+
+  const toggleComplete = async (id: number) => {
+    const next = done.includes(id) ? done.filter((value) => value !== id) : [...done, id];
+    setDone(next);
+    await AsyncStorage.setItem(PROGRESS_KEY, JSON.stringify(next));
+  };
+
+  const toggleBookmark = async (id: number) => {
+    const next = bookmarks.includes(id) ? bookmarks.filter((value) => value !== id) : [...bookmarks, id];
+    setBookmarks(next);
+    await AsyncStorage.setItem(BOOKMARK_KEY, JSON.stringify(next));
+  };
+
+  const openLesson = (lesson: Lesson) => {
+    setSelected(lesson);
+    setAnswers({});
+  };
+
+  if (selected) {
+    const score = selected.quiz.reduce((total, item, index) => total + (answers[index] === item.answer ? 1 : 0), 0);
+    return (
+      <SafeAreaView style={styles.safe}>
+        <StatusBar style="light" />
+        <ScrollView contentContainerStyle={styles.page}>
+          <View style={styles.topRow}>
+            <TouchableOpacity onPress={() => setSelected(null)}><Text style={styles.back}>‹ Course</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => toggleBookmark(selected.id)}><Text style={styles.bookmark}>{bookmarks.includes(selected.id) ? '★ Saved' : '☆ Save'}</Text></TouchableOpacity>
+          </View>
+          <Text style={styles.kicker}>LESSON {selected.id} · {selected.level.toUpperCase()} · {selected.duration}</Text>
+          <Text style={styles.title}>{selected.title}</Text>
+          <Text style={styles.lead}>{selected.summary}</Text>
+
+          <Card title="Learning objectives">{selected.objectives.map((item) => <Bullet key={item} text={item} />)}</Card>
+          {selected.sections.map((section) => <Card key={section.heading} title={section.heading}>{section.body.map((paragraph) => <Text key={paragraph} style={styles.body}>{paragraph}</Text>)}</Card>)}
+          <Card title="Step-by-step practice">{selected.procedure.map((item, index) => <Numbered key={item} number={index + 1} text={item} />)}</Card>
+          <Card title="Model wording">{selected.script.map((item) => <Text key={item} style={styles.quote}>“{item}”</Text>)}</Card>
+          <Card title="Skill drills">{selected.drills.map((item) => <Bullet key={item} text={item} />)}</Card>
+          <Card title="Troubleshooting">
+            {selected.troubleshooting.map((item) => <View key={item.problem} style={styles.problemBlock}><Text style={styles.problem}>{item.problem}</Text><Text style={styles.body}>{item.response}</Text></View>)}
+          </Card>
+          <Card title="Ethical boundary">{selected.ethics.map((item) => <Bullet key={item} text={item} />)}</Card>
+          <Card title="Performance assignment"><Text style={styles.body}>{selected.assignment}</Text></Card>
+          <Card title="Knowledge check">
+            {selected.quiz.map((item, questionIndex) => {
+              const chosen = answers[questionIndex];
+              return <View key={item.question} style={styles.quizBlock}>
+                <Text style={styles.question}>{questionIndex + 1}. {item.question}</Text>
+                {item.options.map((option, optionIndex) => {
+                  const reveal = chosen !== undefined;
+                  const correct = optionIndex === item.answer;
+                  return <TouchableOpacity key={option} style={[styles.option, chosen === optionIndex && styles.optionChosen, reveal && correct && styles.optionCorrect]} onPress={() => setAnswers((current) => ({ ...current, [questionIndex]: optionIndex }))}><Text style={styles.optionText}>{option}</Text></TouchableOpacity>;
+                })}
+                {chosen !== undefined && <Text style={chosen === item.answer ? styles.feedbackCorrect : styles.feedbackWrong}>{chosen === item.answer ? 'Correct. ' : 'Review: '}{item.explanation}</Text>}
+              </View>;
+            })}
+            <Text style={styles.score}>Score: {score}/{selected.quiz.length}</Text>
+          </Card>
+          <Card title="Media production list">{selected.media.map((item) => <Bullet key={item} text={item} muted />)}</Card>
+          <TouchableOpacity style={[styles.button, done.includes(selected.id) && styles.done]} onPress={() => toggleComplete(selected.id)}><Text style={styles.buttonText}>{done.includes(selected.id) ? 'Completed ✓' : 'Mark lesson complete'}</Text></TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.safe}>
+      <StatusBar style="light" />
+      <ScrollView contentContainerStyle={styles.page}>
+        <Text style={styles.brand}>MENTALISM MASTERY</Text>
+        <Text style={styles.hero}>Thought Reading, Prediction and Psychological Performance</Text>
+        <Text style={styles.lead}>Fifteen detailed lessons with original routines, model scripts, practice procedures, troubleshooting, ethics and interactive assessments.</Text>
+        <View style={styles.progress}>
+          <Text style={styles.progressText}>{done.length}/{lessons.length} lessons complete · {bookmarks.length} saved</Text>
+          <View style={styles.track}><View style={[styles.fill, { width: `${(done.length / lessons.length) * 100}%` }]} /></View>
+        </View>
+        <TextInput value={query} onChangeText={setQuery} placeholder="Search titles, skills or objectives…" placeholderTextColor="#888" style={styles.search} />
+        {filtered.map((lesson) => <TouchableOpacity key={lesson.id} style={styles.lesson} onPress={() => openLesson(lesson)}>
+          <View style={styles.num}><Text style={styles.numText}>{lesson.id}</Text></View>
+          <View style={styles.lessonText}>
+            <View style={styles.lessonTitleRow}><Text style={styles.lessonTitle}>{lesson.title}</Text>{bookmarks.includes(lesson.id) && <Text style={styles.star}>★</Text>}</View>
+            <Text style={styles.lessonSummary} numberOfLines={2}>{lesson.summary}</Text>
+            <Text style={styles.meta}>{lesson.duration} · {lesson.level} · {lesson.quiz.length} question quiz</Text>
+          </View>
+          <Text style={styles.chev}>{done.includes(lesson.id) ? '✓' : '›'}</Text>
+        </TouchableOpacity>)}
+        <Text style={styles.disclaimer}>For ethical entertainment and education. Do not exploit grief, health fears, finances, private information or vulnerable people.</Text>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+function Card({ title, children }: { title: string; children: React.ReactNode }) { return <View style={styles.card}><Text style={styles.cardTitle}>{title}</Text>{children}</View>; }
+function Bullet({ text, muted = false }: { text: string; muted?: boolean }) { return <Text style={muted ? styles.muted : styles.body}>• {text}</Text>; }
+function Numbered({ number, text }: { number: number; text: string }) { return <View style={styles.numbered}><Text style={styles.stepNumber}>{number}</Text><Text style={styles.stepText}>{text}</Text></View>; }
+
+const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: '#090f12' }, page: { padding: 20, paddingBottom: 60 }, topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  brand: { color: '#70d7d0', fontSize: 13, fontWeight: '800', letterSpacing: 2, marginTop: 8 }, hero: { color: '#fff', fontSize: 35, fontWeight: '900', lineHeight: 40, marginTop: 10 }, lead: { color: '#c4ced0', fontSize: 16, lineHeight: 24, marginTop: 10 },
+  progress: { backgroundColor: '#121c20', padding: 16, borderRadius: 16, marginTop: 22 }, progressText: { color: '#fff', fontWeight: '700' }, track: { height: 7, backgroundColor: '#26383c', borderRadius: 9, marginTop: 10, overflow: 'hidden' }, fill: { height: 7, backgroundColor: '#70d7d0' },
+  search: { backgroundColor: '#121c20', color: '#fff', borderRadius: 14, padding: 15, marginVertical: 16 }, lesson: { flexDirection: 'row', gap: 13, alignItems: 'center', backgroundColor: '#10191d', padding: 15, borderRadius: 16, marginBottom: 10, borderWidth: 1, borderColor: '#213137' }, lessonText: { flex: 1 }, lessonTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  num: { width: 38, height: 38, borderRadius: 19, backgroundColor: '#173238', alignItems: 'center', justifyContent: 'center' }, numText: { color: '#9ff5ef', fontWeight: '900' }, lessonTitle: { color: '#fff', fontWeight: '800', fontSize: 16, flexShrink: 1 }, lessonSummary: { color: '#a7b4b6', fontSize: 13, lineHeight: 18, marginTop: 4 }, meta: { color: '#71868a', fontSize: 11, marginTop: 7 }, star: { color: '#9ff5ef' }, chev: { color: '#70d7d0', fontSize: 24 },
+  back: { color: '#70d7d0', fontSize: 17, fontWeight: '700', marginBottom: 20 }, bookmark: { color: '#9ff5ef', fontWeight: '800', marginBottom: 20 }, kicker: { color: '#63b9b3', fontSize: 12, fontWeight: '800', letterSpacing: 1.2 }, title: { color: '#fff', fontSize: 31, fontWeight: '900', lineHeight: 36, marginTop: 8 },
+  card: { backgroundColor: '#10191d', padding: 17, borderRadius: 16, marginTop: 14, borderWidth: 1, borderColor: '#213137' }, cardTitle: { color: '#fff', fontSize: 17, fontWeight: '800', marginBottom: 10 }, body: { color: '#c4ced0', fontSize: 15, lineHeight: 23, marginBottom: 9 }, muted: { color: '#829497', fontSize: 15, lineHeight: 22, marginBottom: 7 },
+  quote: { color: '#b5f2ed', fontSize: 15, fontStyle: 'italic', lineHeight: 23, marginBottom: 12, paddingLeft: 12, borderLeftWidth: 3, borderLeftColor: '#287f79' }, numbered: { flexDirection: 'row', gap: 12, marginBottom: 10 }, stepNumber: { color: '#090f12', backgroundColor: '#70d7d0', width: 24, height: 24, borderRadius: 12, textAlign: 'center', lineHeight: 24, fontWeight: '900' }, stepText: { color: '#c4ced0', fontSize: 15, lineHeight: 22, flex: 1 },
+  problemBlock: { marginBottom: 10 }, problem: { color: '#fff', fontSize: 15, fontWeight: '800', marginBottom: 3 }, quizBlock: { marginBottom: 18 }, question: { color: '#fff', fontWeight: '800', fontSize: 15, lineHeight: 21, marginBottom: 8 }, option: { borderWidth: 1, borderColor: '#294047', borderRadius: 12, padding: 12, marginBottom: 7 }, optionChosen: { borderColor: '#70d7d0', backgroundColor: '#163035' }, optionCorrect: { borderColor: '#69b889' }, optionText: { color: '#d0dadb', lineHeight: 20 }, feedbackCorrect: { color: '#8cddb0', lineHeight: 20, marginTop: 5 }, feedbackWrong: { color: '#e0a5a5', lineHeight: 20, marginTop: 5 }, score: { color: '#fff', fontWeight: '800', marginTop: 3 },
+  button: { backgroundColor: '#287f79', padding: 17, borderRadius: 15, alignItems: 'center', marginTop: 18 }, done: { backgroundColor: '#345a46' }, buttonText: { color: '#fff', fontWeight: '900', fontSize: 16 }, disclaimer: { color: '#68777a', fontSize: 12, lineHeight: 18, marginTop: 24 }
+});
