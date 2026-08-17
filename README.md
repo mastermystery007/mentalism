@@ -1,8 +1,15 @@
-# Arcana Academy
+# hypnomentalism
 
-A premium, offline-first Expo / React Native academy for **Mentalism → Hypnosis → Esoteric Magic**.
+A premium, offline-first Expo / React Native app for **Mentalism → Hypnosis → Esoteric Magic**.
 
-The app combines the three previously separate course concepts into one product with 45 lessons, one progress system and one purchase experience.
+The app combines all three tracks into one product with 45 lessons, one progress system and one purchase experience.
+
+## Identity
+
+- App name: `hypnomentalism`
+- Expo slug: `hypnomentalism`
+- Android package: `com.mysterybox.hypnomentalism`
+- iOS bundle identifier: `com.mysterybox.hypnomentalism`
 
 ## Tracks
 
@@ -17,7 +24,7 @@ Effect construction, misdirection, forces and outs, Swami/secret writing, drawin
 
 ## Product features
 
-- 45 structured lessons in the requested order: Mentalism → Hypnosis → Magic
+- 45 structured lessons in the order Mentalism → Hypnosis → Magic
 - Detailed theory sections, objectives and estimated study time
 - Step-by-step practice procedures
 - Model performance wording
@@ -28,7 +35,7 @@ Effect construction, misdirection, forces and outs, Swami/secret writing, drawin
 - Unified persistent completion tracking and bookmarks
 - Automatic migration of previous Mentalism progress/bookmarks
 - Search inside each course
-- Dark premium academy interface
+- Dark premium interface
 - Offline written curriculum
 - No ads, subscriptions or locked lesson packs
 
@@ -49,12 +56,12 @@ GitHub Actions runs TypeScript validation for pull requests and `main` pushes.
 
 ## Important files
 
-- `App.tsx` — academy home, track navigation, lesson reader, search, bookmarks, progress and quizzes
+- `App.tsx` — home, track navigation, lesson reader, search, bookmarks, progress and quizzes
 - `src/course.ts` — Mentalism track
 - `src/hypnosis.ts` — Hypnosis track
 - `src/magic.ts` — Esoteric Magic track
 - `PRODUCTION_MANIFEST.md` — media/store production backlog
-- `app.json` — Expo identity (`Arcana Academy`)
+- `app.json` — Expo identity for `hypnomentalism`
 
 ## Current release boundary
 
@@ -64,4 +71,4 @@ The lesson `media` fields deliberately list the visuals/audio that would improve
 
 ## Ethical scope
 
-Arcana teaches theatrical entertainment, communication and consensual practice. Hypnosis material is non-clinical and does not teach covert control. Do not use deception or suggestion to exploit grief, health fears, finances, confidential information, consent or vulnerable people. Proprietary commercial routines, gimmicks and scripts should not be copied or exposed.
+hypnomentalism teaches theatrical entertainment, communication and consensual practice. Hypnosis material is non-clinical and does not teach covert control. Do not use deception or suggestion to exploit grief, health fears, finances, confidential information, consent or vulnerable people. Proprietary commercial routines, gimmicks and scripts should not be copied or exposed.
