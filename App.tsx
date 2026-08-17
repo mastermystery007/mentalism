@@ -174,7 +174,7 @@ export default function App() {
       <SafeAreaView style={styles.safe}>
         <StatusBar style="light" />
         <ScrollView contentContainerStyle={styles.page}>
-          <TouchableOpacity onPress={() => { setActiveTrackId(null); setQuery(''); }}><Text style={styles.back}>‹ Academy</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => { setActiveTrackId(null); setQuery(''); }}><Text style={styles.back}>‹ Home</Text></TouchableOpacity>
           <Text style={styles.brand}>{activeTrack.eyebrow}</Text>
           <Text style={styles.hero}>{activeTrack.name}</Text>
           <Text style={styles.lead}>{activeTrack.promise}</Text>
@@ -206,12 +206,12 @@ export default function App() {
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
       <ScrollView contentContainerStyle={styles.page}>
-        <Text style={styles.brand}>ARCANA ACADEMY</Text>
+        <Text style={styles.brand}>HYPNOMENTALISM</Text>
         <Text style={styles.hero}>Mentalism. Hypnosis. Magic.</Text>
         <Text style={styles.lead}>One premium mystery-arts curriculum: {totalLessons} deep lessons, original routines, scripts, drills, troubleshooting and assessments. Learn in order or enter any track.</Text>
         <View style={styles.overallCard}>
           <Text style={styles.overallValue}>{done.length}/{totalLessons}</Text>
-          <Text style={styles.overallLabel}>lessons complete across the academy</Text>
+          <Text style={styles.overallLabel}>lessons complete across hypnomentalism</Text>
         </View>
         {TRACKS.map((track, index) => {
           const completed = track.lessons.filter((lesson) => done.includes(lessonKey(track.id, lesson.id))).length;
@@ -223,7 +223,7 @@ export default function App() {
           </TouchableOpacity>;
         })}
         <View style={styles.promiseCard}>
-          <Text style={styles.cardTitle}>One purchase. The complete academy.</Text>
+          <Text style={styles.cardTitle}>One purchase. All three tracks.</Text>
           <Text style={styles.body}>No advertisements, subscriptions or lesson unlocks. Media listed inside lessons can be added later without blocking the written course, scripts, drills or quizzes.</Text>
         </View>
         <Text style={styles.disclaimer}>Training is for lawful entertainment, education and consensual practice. Hypnosis material is non-clinical. Do not use deception or suggestion to override consent or exploit vulnerable people.</Text>
