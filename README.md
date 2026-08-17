@@ -1,25 +1,41 @@
-# Mentalism Mastery
+# Arcana Academy
 
-A premium, offline-first Expo / React Native course application covering psychological forces, equivoque, billets, drawing duplication, predictions, one-ahead, cold reading, muscle reading, memory systems, book tests, dual reality, psychometry and complete show construction.
+A premium, offline-first Expo / React Native academy for **Mentalism → Hypnosis → Esoteric Magic**.
 
-## Current implementation
+The app combines the three previously separate course concepts into one product with 45 lessons, one progress system and one purchase experience.
 
-- 15 expanded lessons with detailed theory chapters
-- Learning objectives and estimated duration
+## Tracks
+
+### 1. Mentalism — 15 lessons
+Psychological forces, equivoque, billets, drawing duplication, predictions, one-ahead, cold reading, muscle reading, memory systems, book tests, dual reality, psychometry and complete show construction.
+
+### 2. Hypnosis — 15 lessons
+Consent and safety, pre-talk, ideomotor exercises, induction architecture, consent-first rapid inductions, deepeners, a hypnotic-phenomena ladder, catalepsy and harmless inhibition, temporary amnesia, sensory suggestion, post-hypnotic suggestions, conversational hypnosis, self-hypnosis and a complete safe demonstration.
+
+### 3. Esoteric Magic — 15 lessons
+Effect construction, misdirection, forces and outs, Swami/secret writing, drawing revelation, one-ahead, billet work, book tests, prediction systems, psychokinesis-style and haunted-object effects, hidden messages, ESP coincidences, bizarre magic, original gimmick design and a seven-minute capstone act.
+
+## Product features
+
+- 45 structured lessons in the requested order: Mentalism → Hypnosis → Magic
+- Detailed theory sections, objectives and estimated study time
 - Step-by-step practice procedures
-- Model presentation wording
+- Model performance wording
 - Skill drills and capstone assignments
-- Troubleshooting and explicit ethical boundaries
-- Interactive knowledge checks with explanations
-- Persistent completion tracking and bookmarks
-- Search across titles, summaries, levels and objectives
-- Dark responsive mobile interface
+- Troubleshooting for common failure modes
+- Track-appropriate ethics and hypnosis safety boundaries
+- Interactive quizzes with explanations
+- Unified persistent completion tracking and bookmarks
+- Automatic migration of previous Mentalism progress/bookmarks
+- Search inside each course
+- Dark premium academy interface
+- Offline written curriculum
 - No ads, subscriptions or locked lesson packs
 
 ## Run locally
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 npm start
 ```
 
@@ -29,19 +45,23 @@ npm start
 npm run typecheck
 ```
 
-A GitHub Actions TypeScript workflow is included at `.github/workflows/typecheck.yml`.
+GitHub Actions runs TypeScript validation for pull requests and `main` pushes.
 
 ## Important files
 
-- `App.tsx` — course reader, search, bookmarks, progress and quizzes
-- `src/course.ts` — complete structured lesson content
-- `PRODUCTION_MANIFEST.md` — exact remaining demonstrations, printables and store assets
-- `app.json` — Expo application identity
+- `App.tsx` — academy home, track navigation, lesson reader, search, bookmarks, progress and quizzes
+- `src/course.ts` — Mentalism track
+- `src/hypnosis.ts` — Hypnosis track
+- `src/magic.ts` — Esoteric Magic track
+- `PRODUCTION_MANIFEST.md` — media/store production backlog
+- `app.json` — Expo identity (`Arcana Academy`)
 
-## Release status
+## Current release boundary
 
-The application and written curriculum are implemented. A public-store release still requires original app artwork, screenshots, demonstration media, a hosted privacy policy, signed production builds and physical-device testing. The exact backlog and acceptance criteria are in `PRODUCTION_MANIFEST.md`.
+The written curriculum and application shell are implemented. A public Play Store release still needs original app artwork, feature graphics/screenshots, selected demonstration videos, optional recorded hypnosis/self-practice audio, a hosted privacy policy, signed production builds and physical-device testing.
+
+The lesson `media` fields deliberately list the visuals/audio that would improve each lesson; missing media does **not** block reading, drills, scripts or quizzes.
 
 ## Ethical scope
 
-This product teaches theatrical entertainment. It must not be used to exploit grief, health fears, finances, confidential information or vulnerable people. Commercial routines, gimmicks and scripts must not be copied or exposed.
+Arcana teaches theatrical entertainment, communication and consensual practice. Hypnosis material is non-clinical and does not teach covert control. Do not use deception or suggestion to exploit grief, health fears, finances, confidential information, consent or vulnerable people. Proprietary commercial routines, gimmicks and scripts should not be copied or exposed.
