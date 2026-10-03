@@ -5,6 +5,7 @@ import { ActivityIndicator, Image, Keyboard, Modal, SafeAreaView, ScrollView, St
 import ConsentLab from './ConsentLab';
 import EquivoqueLab from './EquivoqueLab';
 import EquivoqueWalkthrough from './EquivoqueWalkthrough';
+import { EXTRA_EXPERIENCES } from './ExpandedExperiences';
 import MemoryPalace from './MemoryPalace';
 import OneAheadLab from './OneAheadLab';
 
@@ -80,6 +81,7 @@ const consent: Experience = {
 };
 
 const EXPERIENCES: Record<string, Experience> = {
+  ...EXTRA_EXPERIENCES,
   'mentalism:4': equivoque,
   'mentalism:8': oneAhead,
   'mentalism:11': memory,
@@ -88,6 +90,7 @@ const EXPERIENCES: Record<string, Experience> = {
 };
 
 export const hasLessonExperience = (track: string, id: number) => Boolean(EXPERIENCES[`${track}:${id}`]);
+export const visualLessonCount = Object.keys(EXPERIENCES).length;
 
 export default function LessonExperience({ track, lessonId }: { track: string; lessonId: number }) {
   const experience = EXPERIENCES[`${track}:${lessonId}`];
@@ -109,9 +112,9 @@ export default function LessonExperience({ track, lessonId }: { track: string; l
     <View style={tab !== 'Explore' && styles.hidden} accessibilityElementsHidden={tab !== 'Explore'} importantForAccessibility={tab !== 'Explore' ? 'no-hide-descendants' : 'auto'}><Widget /></View>
     {tab === 'Image' && <View>
       {illustrations.length > 1 && <>
-        <Text style={styles.caption}>Performer coaching view · choose a frame below</Text>
+        <Text style={styles.caption}>Instruction diagrams · choose a frame below</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.gallery} contentContainerStyle={styles.galleryContent}>
-          {illustrations.map((illustration, i) => <TouchableOpacity key={illustration.title} accessibilityRole="button" accessibilityLabel={`Show illustration ${illustration.title}`} accessibilityState={{ selected: imageIndex === i }} style={[styles.thumbnail, imageIndex === i && styles.activeThumbnail]} onPress={() => setImageIndex(i)}><Image source={illustration.source} style={styles.thumbnailImage} resizeMode="contain" /><Text style={styles.thumbnailText}>{illustration.title}</Text></TouchableOpacity>)}
+          {illustrations.map((illustration, i) => <TouchableOpacity key={illustration.title} accessibilityRole="button" accessibilityLabel={`Show illustration ${illustration.title}`} accessibilityState={{ selected: imageIndex === i }} style={[styles.thumbnail, imageIndex === i && styles.activeThumbnail]} onPress={() => setImageIndex(i)}><Image source={illustration.source} style={styles.thumbnailImage} resizeMode="contain" /><Text numberOfLines={2} style={styles.thumbnailText}>{illustration.title}</Text></TouchableOpacity>)}
         </ScrollView>
       </>}
       <TouchableOpacity accessibilityRole="button" accessibilityLabel="Open illustration at a larger size" onPress={() => setExpandedImage(true)}>

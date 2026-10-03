@@ -37,7 +37,7 @@ Effect construction, misdirection, forces and outs, Swami/secret writing, drawin
 - Search inside each course
 - Dark premium interface
 - Offline written curriculum
-- Interactive visual lessons: Mentalism 4 (Equivoque), 8 (One-Ahead), 11 (Memory Palace), Hypnosis 2 (Consent), and Magic 6 (One-Ahead)
+- Interactive visual lessons in 18 of the 45 lessons, with 60 instruction illustrations and 15 offline captioned animations
 - Four original illustrated overviews and four captioned animated MP4 explainers bundled for offline use
 - Image enlargement, on-demand video playback and text transcripts
 - No ads, subscriptions or locked lesson packs
@@ -162,7 +162,50 @@ uses checked-in media and does not require Python or FFmpeg to build.
 
 ## Current release boundary
 
-The written curriculum, application shell and first five visual lessons are implemented. The remaining lessons still use the written format. A public Play Store release still needs original app artwork, feature graphics/screenshots, recorded demonstrations of physical handling, optional recorded hypnosis/self-practice audio, a hosted privacy policy and signed production builds.
+The written curriculum, application shell and eighteen visual lessons are implemented. The remaining twenty-seven lessons still use the written format. A public Play Store release still needs original app artwork, feature graphics/screenshots, recorded demonstrations of physical handling, optional recorded hypnosis/self-practice audio, a hosted privacy policy and signed production builds.
+
+### Expanded visual curriculum
+
+Ten new activity sets add five coaching frames, one 40-second captioned animation,
+five video chapters and an interactive practice exercise to each set. Three sets
+are shared across closely related written lessons. The new coverage is:
+
+| Track | Lesson IDs | Practice |
+| --- | --- | --- |
+| Mentalism | 2 | Observation versus interpretation sorting |
+| Mentalism | 3 | Twenty-trial force log, honest hit accounting and undo |
+| Mentalism / Magic | 6 / 5 | Three original drawings and progressive clue ladders |
+| Mentalism / Magic | 7 / 9 | Three fixed prediction routes with performer/audience views |
+| Mentalism / Magic | 12 / 8 | Original practice text and semantic word revelations |
+| Magic | 1 | Keep/cut routine construction with feedback |
+| Magic | 2 | Compare attention and motivated handling across three beats |
+| Magic | 12 | Swap/rotate symbol rows and reveal exact positional matches |
+| Hypnosis | 1 | Sort careful explanations and overclaims, with professional reading links |
+| Hypnosis | 3 | Four fictional pre-talk questions with feedback and review |
+
+The prior five visual lesson integrations remain available. Practice state is
+kept while switching tabs within a lesson and resets when leaving the lesson;
+it does not alter the course's completion tracking. There are no new runtime
+dependencies, media network requests, inductions, secret information acquisition,
+or filmed hand-technique demonstrations in these activities.
+
+Edit `src/visuals/expanded-lessons.json` for coaching text and mappings;
+`ExpandedLabs.tsx` contains the native exercises. Regenerate the new diagrams,
+animations and static Metro registry with the same Python/Pillow/FFmpeg setup:
+
+```bash
+python scripts/build-expanded-media.py
+npm run check:visuals
+```
+
+The integrity check verifies real curriculum mappings, bundled media, target-hit
+accounting, fixed outcome routes and all 120 unique symbol arrangements. It runs
+alongside TypeScript validation on GitHub. The checked-in media works offline;
+only optional professional-source links require internet.
+
+Android release bundling also tracks lesson JSON and `assets/` as Gradle inputs.
+Updating only a caption or media file therefore refreshes the bundled release,
+instead of requiring an unrelated TypeScript edit to invalidate the bundle.
 
 The lesson `media` fields are an internal production backlog. They are no longer
 shown to learners as if media were already available. Implemented visuals live in

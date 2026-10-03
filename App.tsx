@@ -5,7 +5,7 @@ import { BackHandler, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, Tou
 import { Lesson, lessons as mentalismLessons } from './src/course';
 import { hypnosisLessons } from './src/hypnosis';
 import { magicLessons } from './src/magic';
-import LessonExperience, { hasLessonExperience } from './src/visuals/LessonExperience';
+import LessonExperience, { hasLessonExperience, visualLessonCount } from './src/visuals/LessonExperience';
 
 const PROGRESS_KEY = 'arcana-progress-v1';
 const BOOKMARK_KEY = 'arcana-bookmarks-v1';
@@ -236,12 +236,15 @@ export default function App() {
         })}
         <View style={styles.promiseCard}>
           <Text style={styles.cardTitle}>Explore the visual lessons</Text>
-          <Text style={styles.body}>Tap, inspect and practise with illustrations and offline animations.</Text>
+          <Text style={styles.body}>{visualLessonCount} of 45 lessons include interactive practice, illustrations and offline animations. Look for the visual badge in each track.</Text>
           {[
             { track: 'mentalism' as TrackId, id: 4, label: 'Equivoque · setup and choice practice' },
             { track: 'mentalism' as TrackId, id: 8, label: 'One-Ahead · see the information move' },
             { track: 'mentalism' as TrackId, id: 11, label: 'Memory Palace · place and recall words' },
             { track: 'hypnosis' as TrackId, id: 2, label: 'Consent · practise safe decisions' },
+            { track: 'mentalism' as TrackId, id: 2, label: 'Observation · separate facts from guesses' },
+            { track: 'magic' as TrackId, id: 12, label: 'Symbols · arrange and compare two rows' },
+            { track: 'hypnosis' as TrackId, id: 3, label: 'Pre-talk · rehearse the conversation' },
           ].map((item) => <TouchableOpacity key={`${item.track}:${item.id}`} accessibilityRole="button" style={styles.visualLink} onPress={() => { setActiveTrackId(item.track); setSelected(TRACKS.find((track) => track.id === item.track)!.lessons.find((lesson) => lesson.id === item.id)!); setAnswers({}); setQuery(''); }}><Text style={styles.visualLinkText}>{item.label} ›</Text></TouchableOpacity>)}
         </View>
         <Text style={styles.disclaimer}>Training is for lawful entertainment, education and consensual practice. Hypnosis material is non-clinical. Do not use deception or suggestion to override consent or exploit vulnerable people.</Text>

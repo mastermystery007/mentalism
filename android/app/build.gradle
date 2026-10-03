@@ -62,6 +62,12 @@ react {
     autolinkLibrariesWithApp()
 }
 
+// React Native 0.76 tracks JavaScript/TypeScript by default. Include lesson data
+// and offline media so an incremental release cannot reuse an outdated bundle.
+tasks.withType(com.facebook.react.tasks.BundleHermesCTask).configureEach {
+    sources.include("src/**/*.json", "assets/**/*")
+}
+
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */

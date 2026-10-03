@@ -10,9 +10,20 @@ This file defines the remaining media and release work. None of the items below 
 - Mentalism 8 and Esoteric Magic 6: shared audience/performer information timeline, illustration and captioned animation.
 - Mentalism 11: five-stop memory palace, word placement and recall drill, illustrated room and captioned animation.
 - Hypnosis 2: fictional consent decision scenarios, process illustration and captioned animation.
+- Mentalism 2 and 3: observation sorting and a twenty-trial force log.
+- Mentalism 6 / Magic 5: original drawing clue ladders.
+- Mentalism 7 / Magic 9: fixed prediction routing and performer/audience training views.
+- Mentalism 12 / Magic 8: original book text and semantic reveal practice.
+- Magic 1, 2 and 12: routine construction, attention timing and symbol-row arrangement.
+- Hypnosis 1 and 3: careful-model sorting and fictional pre-talk conversation rehearsal.
+
+**18 of 45 lessons now have visual integrations.** The ten expanded sets add
+50 PNGs and ten MP4s, bringing bundled instruction media to 60 illustrations and
+15 captioned animations. Twenty-seven lessons remain text-only.
 
 These original offline assets are in `assets/lesson-media/`; their generation
-source is `scripts/build-lesson-media.py`. The animations explain concepts and
+sources are `scripts/build-lesson-media.py`, `scripts/build-equivoque-walkthrough.py`
+and `scripts/build-expanded-media.py`. The animations explain concepts and
 do not replace filmed physical handling demonstrations or recorded practice audio.
 The rest of the per-lesson `media` lists remain a backlog.
 
