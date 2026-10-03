@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useMemo, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { BackHandler, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Lesson, lessons as mentalismLessons } from './src/course';
 import { hypnosisLessons } from './src/hypnosis';
 import { magicLessons } from './src/magic';
+import LessonExperience, { hasLessonExperience } from './src/visuals/LessonExperience';
 
 const PROGRESS_KEY = 'arcana-progress-v1';
 const BOOKMARK_KEY = 'arcana-bookmarks-v1';
@@ -62,6 +63,15 @@ export default function App() {
   const [bookmarks, setBookmarks] = useState<string[]>([]);
   const [query, setQuery] = useState('');
   const [answers, setAnswers] = useState<Answers>({});
+
+  useEffect(() => {
+    const listener = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (selected) { setSelected(null); return true; }
+      if (activeTrackId) { setActiveTrackId(null); setQuery(''); return true; }
+      return false;
+    });
+    return () => listener.remove();
+  }, [selected, activeTrackId]);
 
   useEffect(() => {
     Promise.all([
@@ -125,7 +135,7 @@ export default function App() {
     return (
       <SafeAreaView style={styles.safe}>
         <StatusBar style="light" />
-        <ScrollView contentContainerStyle={styles.page}>
+        <ScrollView key={key} contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
           <View style={styles.topRow}>
             <TouchableOpacity onPress={() => setSelected(null)}><Text style={styles.back}>‹ {activeTrack.name}</Text></TouchableOpacity>
             <TouchableOpacity onPress={() => toggleBookmark(activeTrack.id, selected.id)}><Text style={styles.bookmark}>{bookmarks.includes(key) ? '★ Saved' : '☆ Save'}</Text></TouchableOpacity>
@@ -134,6 +144,8 @@ export default function App() {
           <Text style={styles.title}>{selected.title}</Text>
           <Text style={styles.lead}>{selected.summary}</Text>
           <Text style={styles.lessonTime}>{selected.duration}</Text>
+
+          <LessonExperience key={key} track={activeTrack.id} lessonId={selected.id} />
 
           <Card title="Learning objectives">{selected.objectives.map((item) => <Bullet key={item} text={item} />)}</Card>
           {selected.sections.map((section) => <Card key={section.heading} title={section.heading}>{section.body.map((paragraph) => <Text key={paragraph} style={styles.body}>{paragraph}</Text>)}</Card>)}
@@ -160,7 +172,6 @@ export default function App() {
             })}
             <Text style={styles.score}>Score: {score}/{selected.quiz.length}</Text>
           </Card>
-          <Card title="Media production list">{selected.media.map((item) => <Bullet key={item} text={item} muted />)}</Card>
           <TouchableOpacity style={[styles.button, done.includes(key) && styles.done]} onPress={() => toggleComplete(activeTrack.id, selected.id)}><Text style={styles.buttonText}>{done.includes(key) ? 'Completed ✓' : 'Mark lesson complete'}</Text></TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
@@ -191,6 +202,7 @@ export default function App() {
                 <View style={styles.lessonTitleRow}><Text style={styles.lessonTitle}>{lesson.title}</Text>{bookmarks.includes(key) && <Text style={styles.star}>★</Text>}</View>
                 <Text style={styles.lessonSummary} numberOfLines={2}>{lesson.summary}</Text>
                 <Text style={styles.meta}>{lesson.duration} · {lesson.level} · {lesson.quiz.length} question quiz</Text>
+                {hasLessonExperience(activeTrack.id, lesson.id) && <Text style={styles.visualBadge}>INTERACTIVE · IMAGE · VIDEO</Text>}
               </View>
               <Text style={styles.chev}>{done.includes(key) ? '✓' : '›'}</Text>
             </TouchableOpacity>;
@@ -223,8 +235,14 @@ export default function App() {
           </TouchableOpacity>;
         })}
         <View style={styles.promiseCard}>
-          <Text style={styles.cardTitle}>One purchase. All three tracks.</Text>
-          <Text style={styles.body}>No advertisements, subscriptions or lesson unlocks. Media listed inside lessons can be added later without blocking the written course, scripts, drills or quizzes.</Text>
+          <Text style={styles.cardTitle}>Explore the visual lessons</Text>
+          <Text style={styles.body}>Tap, inspect and practise with illustrations and offline animations.</Text>
+          {[
+            { track: 'mentalism' as TrackId, id: 4, label: 'Equivoque · follow the choice branches' },
+            { track: 'mentalism' as TrackId, id: 8, label: 'One-Ahead · see the information move' },
+            { track: 'mentalism' as TrackId, id: 11, label: 'Memory Palace · place and recall words' },
+            { track: 'hypnosis' as TrackId, id: 2, label: 'Consent · practise safe decisions' },
+          ].map((item) => <TouchableOpacity key={`${item.track}:${item.id}`} accessibilityRole="button" style={styles.visualLink} onPress={() => { setActiveTrackId(item.track); setSelected(TRACKS.find((track) => track.id === item.track)!.lessons.find((lesson) => lesson.id === item.id)!); setAnswers({}); setQuery(''); }}><Text style={styles.visualLinkText}>{item.label} ›</Text></TouchableOpacity>)}
         </View>
         <Text style={styles.disclaimer}>Training is for lawful entertainment, education and consensual practice. Hypnosis material is non-clinical. Do not use deception or suggestion to override consent or exploit vulnerable people.</Text>
       </ScrollView>
@@ -237,6 +255,7 @@ function Bullet({ text, muted = false }: { text: string; muted?: boolean }) { re
 function Numbered({ number, text }: { number: number; text: string }) { return <View style={styles.numbered}><Text style={styles.stepNumber}>{number}</Text><Text style={styles.stepText}>{text}</Text></View>; }
 
 const styles = StyleSheet.create({
+  visualBadge: { color: '#f0d18d', fontSize: 10, fontWeight: '800', letterSpacing: 0.5, marginTop: 8 }, visualLink: { minHeight: 48, justifyContent: 'center', borderTopWidth: 1, borderTopColor: '#3a3221', paddingVertical: 12 }, visualLinkText: { color: '#f0d18d', fontSize: 14, fontWeight: '700', lineHeight: 21 },
   safe: { flex: 1, backgroundColor: '#080b0f' }, page: { padding: 20, paddingBottom: 60 }, topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   brand: { color: '#d7b56d', fontSize: 13, fontWeight: '900', letterSpacing: 2.4, marginTop: 8 }, hero: { color: '#fff', fontSize: 36, fontWeight: '900', lineHeight: 41, marginTop: 10 }, lead: { color: '#c6c9cd', fontSize: 16, lineHeight: 24, marginTop: 10 }, lessonTime: { color: '#8c939a', fontSize: 13, marginTop: 9 },
   overallCard: { backgroundColor: '#11151b', padding: 18, borderRadius: 18, marginTop: 22, borderWidth: 1, borderColor: '#282e37', flexDirection: 'row', alignItems: 'baseline', gap: 9 }, overallValue: { color: '#f0d18d', fontSize: 28, fontWeight: '900' }, overallLabel: { color: '#aeb5bd', flex: 1 },

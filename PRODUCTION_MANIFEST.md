@@ -4,6 +4,18 @@ The combined application now contains **45 written lessons** in the order **Ment
 
 This file defines the remaining media and release work. None of the items below block the written course from functioning.
 
+## Implemented visual lessons
+
+- Mentalism 4: three-object equivoque simulator, branching illustration and captioned animation.
+- Mentalism 8 and Esoteric Magic 6: shared audience/performer information timeline, illustration and captioned animation.
+- Mentalism 11: five-stop memory palace, word placement and recall drill, illustrated room and captioned animation.
+- Hypnosis 2: fictional consent decision scenarios, process illustration and captioned animation.
+
+These original offline assets are in `assets/lesson-media/`; their generation
+source is `scripts/build-lesson-media.py`. The animations explain concepts and
+do not replace filmed physical handling demonstrations or recorded practice audio.
+The rest of the per-lesson `media` lists remain a backlog.
+
 ## Required store assets
 
 - `assets/icon.png` — 1024×1024 Arcana identity, no small text.

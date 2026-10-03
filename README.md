@@ -37,6 +37,9 @@ Effect construction, misdirection, forces and outs, Swami/secret writing, drawin
 - Search inside each course
 - Dark premium interface
 - Offline written curriculum
+- Interactive visual lessons: Mentalism 4 (Equivoque), 8 (One-Ahead), 11 (Memory Palace), Hypnosis 2 (Consent), and Magic 6 (One-Ahead)
+- Four original illustrated overviews and four captioned animated MP4 explainers bundled for offline use
+- Image enlargement, on-demand video playback and text transcripts
 - No ads, subscriptions or locked lesson packs
 
 ## Run locally
@@ -54,6 +57,47 @@ npm run typecheck
 
 GitHub Actions runs TypeScript validation for pull requests and `main` pushes.
 
+## Android Studio and standalone testing
+
+The generated native project is in `android/`. Open that folder in Android Studio
+and use JDK 17 or 21 for Gradle (Settings → Build Tools → Gradle → Gradle JDK).
+Set the Android SDK location when prompted; `android/local.properties` is local
+to each computer and is not committed.
+
+For development, run `npm run android` from the repository root. This builds the
+debug app and starts Metro; keep that terminal running while testing.
+
+If you use Android Studio's Run button with the `debug` variant, first run
+`npm run start:usb` from the repository root with one USB-connected Android
+device. This forwards the device's port 8081 to Metro on your computer and
+starts Expo's development server. Keep it running, then launch or reload the app.
+The Android SDK's `adb` must be on your PATH. If multiple devices are connected,
+set `ANDROID_SERIAL` to the desired device's serial number.
+
+The error “Unable to load script / make sure Metro is running” means the debug
+app cannot reach that server. A debug APK normally has no embedded JavaScript
+bundle. Running only the native project in Android Studio does not start Metro.
+
+To build and install a standalone test app instead, run `npm run android:preview`
+from the repository root. It uses the release variant and packages the
+JavaScript inside the APK. In Android Studio, select the `release` build variant
+when you want this behavior; switching back to `debug` requires Metro again.
+
+For a standalone test APK on Windows, run from `android/`:
+
+```powershell
+.\gradlew.bat :app:assembleRelease -PreactNativeArchitectures=arm64-v8a
+```
+
+The APK is at `android/app/build/outputs/apk/release/app-release.apk` and includes
+the JavaScript bundle, so Metro is not required. This command targets ARM64
+phones; omit the architecture option to build all configured architectures.
+The generated release configuration uses the debug signing key for local
+testing. Use a private production signing key before publishing to a store.
+
+Expo's [local build documentation](https://docs.expo.dev/guides/local-app-production/)
+describes the native project generation and release build workflow.
+
 ## Important files
 
 - `App.tsx` — home, track navigation, lesson reader, search, bookmarks, progress and quizzes
@@ -62,12 +106,37 @@ GitHub Actions runs TypeScript validation for pull requests and `main` pushes.
 - `src/magic.ts` — Esoteric Magic track
 - `PRODUCTION_MANIFEST.md` — media/store production backlog
 - `app.json` — Expo identity for `hypnomentalism`
+- `src/visuals/LessonExperience.tsx` — lesson-to-widget/media registry and accessible media tabs
+- `src/visuals/` — native choice simulator, information timeline, memory drill and consent scenarios
+- `assets/lesson-media/` — bundled PNG illustrations and silent captioned MP4 animations
+- `scripts/build-lesson-media.py` — reproducible original diagram and animation generation (Python/Pillow and FFmpeg)
+
+## Visual lesson authoring
+
+The home screen links directly to the visual lessons; the course list also marks
+them with an **INTERACTIVE · IMAGE · VIDEO** badge. Each visual lesson has Explore,
+Image and Video tabs near its beginning. Tab changes preserve the current exercise;
+opening a different lesson starts a fresh exercise. Videos play only on request,
+pause when the app moves into the background, and stop when the video tab closes.
+
+To extend the set, create a native widget in `src/visuals/`, add local PNG/MP4 assets,
+then register the composite `track:lessonId` key in `LessonExperience.tsx`. Use
+static `require` calls so Metro includes the media in the release APK. Include an
+image description and a full text transcript. Rebuild the native app after adding
+native dependencies. The current player uses the Expo SDK 52 compatible
+`expo-video` 2.0.x package.
+
+The current clips are original animated conceptual explanations with captions
+and no audio. They do not replace recorded demonstrations of physical handling,
+nor do the consent scenarios perform an induction or clinical screening.
 
 ## Current release boundary
 
-The written curriculum and application shell are implemented. A public Play Store release still needs original app artwork, feature graphics/screenshots, selected demonstration videos, optional recorded hypnosis/self-practice audio, a hosted privacy policy, signed production builds and physical-device testing.
+The written curriculum, application shell and first five visual lessons are implemented. The remaining lessons still use the written format. A public Play Store release still needs original app artwork, feature graphics/screenshots, recorded demonstrations of physical handling, optional recorded hypnosis/self-practice audio, a hosted privacy policy and signed production builds.
 
-The lesson `media` fields deliberately list the visuals/audio that would improve each lesson; missing media does **not** block reading, drills, scripts or quizzes.
+The lesson `media` fields are an internal production backlog. They are no longer
+shown to learners as if media were already available. Implemented visuals live in
+the typed lesson experience registry; missing media does not block the curriculum.
 
 ## Ethical scope
 
