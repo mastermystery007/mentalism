@@ -238,7 +238,7 @@ export default function App() {
           <Text style={styles.cardTitle}>Explore the visual lessons</Text>
           <Text style={styles.body}>Tap, inspect and practise with illustrations and offline animations.</Text>
           {[
-            { track: 'mentalism' as TrackId, id: 4, label: 'Equivoque · follow the choice branches' },
+            { track: 'mentalism' as TrackId, id: 4, label: 'Equivoque · setup and choice practice' },
             { track: 'mentalism' as TrackId, id: 8, label: 'One-Ahead · see the information move' },
             { track: 'mentalism' as TrackId, id: 11, label: 'Memory Palace · place and recall words' },
             { track: 'hypnosis' as TrackId, id: 2, label: 'Consent · practise safe decisions' },

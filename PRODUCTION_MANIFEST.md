@@ -6,7 +6,7 @@ This file defines the remaining media and release work. None of the items below 
 
 ## Implemented visual lessons
 
-- Mentalism 4: three-object equivoque simulator, branching illustration and captioned animation.
+- Mentalism 4: six-frame tabletop setup walkthrough, performer/audience views, prop inspection, three-object choice simulator, seven illustrations, and setup/choice-logic animations.
 - Mentalism 8 and Esoteric Magic 6: shared audience/performer information timeline, illustration and captioned animation.
 - Mentalism 11: five-stop memory palace, word placement and recall drill, illustrated room and captioned animation.
 - Hypnosis 2: fictional consent decision scenarios, process illustration and captioned animation.

@@ -130,6 +130,36 @@ The current clips are original animated conceptual explanations with captions
 and no audio. They do not replace recorded demonstrations of physical handling,
 nor do the consent scenarios perform an induction or clinical screening.
 
+### Equivoque: watch and practise
+
+Mentalism lesson 4 now opens with **Setup walkthrough** and **Choice practice**
+modes. Six coaching frames show participant and performer positions, object
+placement, parking movements, exact wording and common mistakes. Tap objects to
+inspect their role, switch to audience view to hide the training target, or turn
+diagram annotations off. Previous/Next controls sit above the diagram and below
+the coaching notes.
+
+The Image tab contains all six frames plus the branch map. Tap a thumbnail to
+inspect it and tap the main image to enlarge it. The Video tab offers a 36-second
+**Setup walkthrough** animation and the shorter **Choice logic** clip. The
+video supports half-speed playback and jumps to any of the six setup steps. The
+alternate first-choice example resets the three objects before replaying. These
+are illustrated coaching demonstrations; recorded hand technique will require
+original footage or media licensed for redistribution in the app.
+
+To regenerate the bundled media, install Python 3.10+ and FFmpeg with `libx264` on
+your PATH, then run:
+
+```bash
+python -m pip install Pillow==12.3.0
+python scripts/build-lesson-media.py
+python scripts/build-equivoque-walkthrough.py
+```
+
+The scripts use Segoe UI on Windows or DejaVu Sans on Linux. Install one of those
+font families before generation; platform fonts can change typography. The app
+uses checked-in media and does not require Python or FFmpeg to build.
+
 ## Current release boundary
 
 The written curriculum, application shell and first five visual lessons are implemented. The remaining lessons still use the written format. A public Play Store release still needs original app artwork, feature graphics/screenshots, recorded demonstrations of physical handling, optional recorded hypnosis/self-practice audio, a hosted privacy policy and signed production builds.
